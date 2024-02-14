@@ -2,6 +2,7 @@ package javacards;
 
 public class Config {
     public static final String dir = Card.class.getResource("/cards/").toExternalForm();
+    public static final int NUMBER_OF_PLAYERS = 4;
 
     public static final String color(String suit, boolean extended) {
         if (extended) {

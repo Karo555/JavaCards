@@ -2,6 +2,7 @@ package javacards;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 /**
@@ -27,6 +28,7 @@ public class Player implements CrazyEightsPlayer {
      */
     private static List<Card> hand;
 
+
     /**
      * Constructor for the Player class.
      *
@@ -39,7 +41,19 @@ public class Player implements CrazyEightsPlayer {
         this.position = pos;
         this.AI = AI;
         this.hand = new ArrayList<>();
+        receiveHand();
     }
+
+    /**
+     * Deals a hand of 7 cards to the player.
+     */
+    public void receiveHand(){
+        for(int i=0;i<7;i++){
+            hand.add(App.deck.dealCard());
+        }
+    }
+
+
 
     /**
      * Gets the player's hand.
@@ -69,10 +83,31 @@ public class Player implements CrazyEightsPlayer {
      */
 
     @Override
-    public void playCard(int card) {
+    public void discardCard(int card) {
         Animation.move(hand.get(card), new int[]{0, 0});
         App.stack.add(hand.remove(card));
         System.out.println("Removed card: " + App.stack.cards.get(App.stack.cards.size() - 1));
+    }
+
+    /**
+     * Plays a card from the player's hand.
+     * If the player has a card that matches the top card of the discard pile, they play it.
+     * Otherwise, they draw a card from the deck.
+     *
+     * @param discardPile The discard pile.
+     * @param currentCard The current card.
+     */
+
+    public void playCard(DiscardPile discardPile, Card currentCard){
+        Random random= new Random();
+        for(int i=0;i<hand.size();i++){
+            if(hand.get(i).getRank().equals(discardPile.getTopCard().getRank()) || hand.get(i).getSuit().equals(discardPile.getTopCard().getSuit())){
+                discardCard(i);
+                DiscardPile.setTopCard(hand.get(i));
+                return;
+            }
+        }
+        drawCard(App.deck.dealCard());
     }
 
     /**

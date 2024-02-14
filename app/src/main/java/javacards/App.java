@@ -10,8 +10,8 @@ public class App extends Application {
 
     public final static Deck deck = new Deck(true);
     public final static Deck stack = new Deck(false);
-    private final static Player player = new Player("player", new int[]{140,140}, false);
-    public static final int amountOfPlayers = 3;
+    private final static Player player = new Player("Player 1", new int[]{140, 140}, false);
+    private final static Player[] players=new Player[Config.NUMBER_OF_PLAYERS];
 
     @Override
     public void start(Stage stage) {
@@ -49,6 +49,9 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
+        for(int i=0;i<Config.NUMBER_OF_PLAYERS;i++){
+            players[i]=new Player("Player "+(i+1),new int[]{10,10},false);
+        }
         launch();
     }
 }
